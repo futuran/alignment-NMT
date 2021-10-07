@@ -1,0 +1,77 @@
+## Where the samples will be written
+save_data: ./ex.test/data/run/vocab
+## Where the vocab(s) will be written
+src_vocab: ./ex.test/data/run/vocab.en
+tgt_vocab: ./ex.test/data/run/vocab.ja
+# Prevent overwriting existing files in the folder
+overwrite: True
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: ./ex.test/data/tmp.en
+        path_tgt: ./ex.test/data/tmp.ja
+        path_adj: ./ex.test/data/tmp.adj
+    valid:
+        path_src: ./ex.test/data/tmp.en
+        path_tgt: ./ex.test/data/tmp.ja
+        path_adj: ./ex.test/data/tmp.adj
+
+
+# Vocabulary files that were just created
+
+#lambda_align: 1
+
+share_vocab: True
+
+
+# General opts
+save_model: ./ex.test/data/run/model
+keep_checkpoint: 50
+save_checkpoint_steps: 500
+average_decay: 0.0005
+seed: 1234
+report_every: 100
+train_steps: 2
+valid_steps: 500
+
+# Batching
+queue_size: 10000
+bucket_size: 32768
+#world_size: 2
+#gpu_ranks: [0, 1]
+batch_type: "sents"
+batch_size: 8
+valid_batch_size: 16
+batch_size_multiple: 1
+max_generator_batches: 0
+accum_count: [1]
+accum_steps: [0]
+
+# Optimization
+model_dtype: "fp32"
+optim: "adam"
+learning_rate: 2
+warmup_steps: 8000
+decay_method: "noam"
+adam_beta2: 0.998
+max_grad_norm: 0
+label_smoothing: 0.1
+param_init: 0
+param_init_glorot: true
+normalization: "tokens"
+
+# Model
+encoder_type: transformer
+decoder_type: transformer
+enc_layers: 6
+dec_layers: 6
+heads: 8
+rnn_size: 512
+word_vec_size: 512
+transformer_ff: 2048
+dropout_steps: [0]
+dropout: [0.1]
+attention_dropout: [0.1]
+share_decoder_embeddings: true
+share_embeddings: true
