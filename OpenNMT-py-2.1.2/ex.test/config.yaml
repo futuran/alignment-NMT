@@ -9,13 +9,13 @@ overwrite: True
 # Corpus opts:
 data:
     corpus_1:
-        path_src: ./ex.test/data/tmp.src.30
-        path_tgt: ./ex.test/data/tmp.tgt.30
-        path_adj: ./ex.test/data/tmp.adj.30
+        path_src: ./ex.test/data/tmp.src
+        path_tgt: ./ex.test/data/tmp.trg
+        path_adj: ./ex.test/data/tmp.adj
     valid:
-        path_src: ./ex.test/data/tmp.src.30
-        path_tgt: ./ex.test/data/tmp.tgt.30
-        path_adj: ./ex.test/data/tmp.adj.30
+        path_src: ./ex.test/data/tmp.src
+        path_tgt: ./ex.test/data/tmp.trg
+        path_adj: ./ex.test/data/tmp.adj
 
 
 # Vocabulary files that were just created
@@ -32,7 +32,7 @@ save_checkpoint_steps: 500
 average_decay: 0.0005
 seed: 1234
 report_every: 100
-train_steps: 2
+train_steps: 10
 valid_steps: 500
 
 # Batching

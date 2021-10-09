@@ -210,7 +210,7 @@ def build_base_model(model_opt, fields, gpu, checkpoint=None, gpu_id=None):
         model_opt: the option loaded from checkpoint. It's important that
             the opts have been updated and validated. See
             :class:`onmt.utils.parse.ArgumentParser`.
-        fields (dict[str, torchtext.data.Field]):
+        fields (dict[str, torchtext.legacy.data.Field]):
             `Field` objects for the model.
         gpu (bool): whether to use gpu.
         checkpoint: the model gnerated by train phase, or a resumed snapshot

@@ -223,7 +223,7 @@ fields
 
     {'src': <onmt.inputters.text_dataset.TextMultiField at 0x7fca93802c50>,
      'tgt': <onmt.inputters.text_dataset.TextMultiField at 0x7fca93802f60>,
-     'indices': <torchtext.data.field.Field at 0x7fca93802940>}
+     'indices': <torchtext.legacy.data.field.Field at 0x7fca93802940>}
 
 
 

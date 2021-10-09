@@ -16,7 +16,7 @@ class TranslationBuilder(object):
 
     Args:
        data (onmt.inputters.Dataset): Data.
-       fields (List[Tuple[str, torchtext.data.Field]]): data fields
+       fields (List[Tuple[str, torchtext.legacy.data.Field]]): data fields
        n_best (int): number of translations produced
        replace_unk (bool): replace unknown words using attention
        has_tgt (bool): will the batch have gold targets
