@@ -132,14 +132,17 @@ class TransformerEncoder(EncoderBase):
         self._check_args(src, lengths)
 
         # 20211005 tamura
+
+        device = src.device
+
         batch_size = src.shape[1]
         adj_size = lengths[0]
 
         coo = adj[:,1:].T.clone().detach()   # 2 * num_of_coo
         coo[0,:] += adj[:,0] * adj_size
-        coo = torch.sparse_coo_tensor(coo, torch.ones(coo.shape[1]), (batch_size*adj_size,adj_size))
+        coo = torch.sparse_coo_tensor(coo, torch.ones(coo.shape[1], device=device), (batch_size*adj_size,adj_size)).to(device)
         true_adj = coo.to_dense().view(batch_size, adj_size, adj_size)
-        true_adj = true_adj.to(torch.bool)#.to(torch.device('cuda'))
+        true_adj = true_adj.to(torch.bool).to(device)
         # 20211005 tamura end
 
         emb = self.embeddings(src)

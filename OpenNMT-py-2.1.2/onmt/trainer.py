@@ -313,9 +313,12 @@ class Trainer(object):
                     else (batch.src, None)
                 tgt = batch.tgt
 
+                # 20211010 tamura
+                adj = batch.adj
+
                 with torch.cuda.amp.autocast(enabled=self.optim.amp):
                     # F-prop through the model.
-                    outputs, attns = valid_model(src, tgt, src_lengths,
+                    outputs, attns = valid_model(src, tgt, adj, src_lengths,
                                                  with_align=self.with_align)
 
                     # Compute loss.
@@ -323,6 +326,8 @@ class Trainer(object):
 
                 # Update statistics.
                 stats.update(batch_stats)
+
+                # 20211010 tamura end
         if moving_average:
             for param_data, param in zip(model_params_data,
                                          self.model.parameters()):
