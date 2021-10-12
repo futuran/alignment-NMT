@@ -59,10 +59,10 @@ class NMTModel(BaseModel):
         self.decoder = decoder
 
     # 20211005 tamura
-    def forward(self, src, tgt, adj, lengths, bptt=False, with_align=False):
+    def forward(self, src, tgt, adj, sep_id, lengths, bptt=False, with_align=False):
         dec_in = tgt[:-1]  # exclude last target from inputs
 
-        enc_state, memory_bank, lengths = self.encoder(src, adj, lengths)
+        enc_state, memory_bank, lengths = self.encoder(src, adj, sep_id, lengths)
 
         if not bptt:
             self.decoder.init_state(src, memory_bank, enc_state)

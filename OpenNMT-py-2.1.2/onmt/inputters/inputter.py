@@ -255,6 +255,7 @@ class IterOnDevice(object):
             batch.indices = batch.indices.to(device)
             # 20211005 tamura
             batch.adj = batch.adj.to(device)
+            #batch.orig_length = batch.orig_length(device)
             # 20211005 tamura end
             batch.alignment = batch.alignment.to(device) \
                 if hasattr(batch, 'alignment') else None

@@ -14,19 +14,25 @@ def translate(opt):
 
     translator = build_translator(opt, logger=logger, report_score=True)
     src_shards = split_corpus(opt.src, opt.shard_size)
+    # 20211013 tamura
+    adj_shards = split_corpus(opt.adj, opt.shard_size)
+    # 20211013 tamura end
     tgt_shards = split_corpus(opt.tgt, opt.shard_size)
-    shard_pairs = zip(src_shards, tgt_shards)
+    shard_pairs = zip(src_shards, adj_shards, tgt_shards)
 
-    for i, (src_shard, tgt_shard) in enumerate(shard_pairs):
+    for i, (src_shard, adj_shard, tgt_shard) in enumerate(shard_pairs):
         logger.info("Translating shard %d." % i)
+        # 20211013 tamura
         translator.translate(
             src=src_shard,
+            adj=adj_shard,
             tgt=tgt_shard,
             batch_size=opt.batch_size,
             batch_type=opt.batch_type,
             attn_debug=opt.attn_debug,
             align_debug=opt.align_debug
             )
+        # 20211013 tamura end
 
 
 def _get_parser():

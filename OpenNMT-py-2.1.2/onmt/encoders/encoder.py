@@ -41,7 +41,7 @@ class EncoderBase(nn.Module):
             aeq(n_batch, n_batch_)
 
     # 20211005 tamura
-    def forward(self, src, adj, lengths=None):
+    def forward(self, src, adj, sep_id, lengths=None):
         """
         Args:
             src (LongTensor):

@@ -753,6 +753,11 @@ def translate_opts(parser):
     group.add('--src', '-src', required=True,
               help="Source sequence to decode (one line per "
                    "sequence)")
+    # 20211013 tamura
+    group.add('--adj', '-adj', required=True,
+              help="Source adj to decode (one line per "
+                   "sequence)")
+    # 20211013 tamura end
     group.add('--tgt', '-tgt',
               help='True target sequence (optional)')
     group.add('--tgt_prefix', '-tgt_prefix', action='store_true',

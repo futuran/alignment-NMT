@@ -127,7 +127,7 @@ class TransformerEncoder(EncoderBase):
         )
 
     # 20211005 tamura
-    def forward(self, src, adj, lengths=None):
+    def forward(self, src, adj, sep_id, lengths=None):
         """See :func:`EncoderBase.forward()`"""
         self._check_args(src, lengths)
 
@@ -142,7 +142,18 @@ class TransformerEncoder(EncoderBase):
         coo[0,:] += adj[:,0] * adj_size
         coo = torch.sparse_coo_tensor(coo, torch.ones(coo.shape[1], device=device), (batch_size*adj_size,adj_size)).to(device)
         true_adj = coo.to_dense().view(batch_size, adj_size, adj_size)
-        true_adj = true_adj.to(torch.bool).to(device)
+
+        # a,b : adj_size * batch_size * 1
+        a = torch.where(src == sep_id, torch.ones_like(src), torch.zeros_like(src))
+        b = torch.arange(0, adj_size).repeat(1, batch_size, 1).T
+        c = torch.sum((a*b).view(-1,batch_size), dim=0)
+        print(c)
+        for i, sl in enumerate(c):
+            true_adj[i][:sl,:sl] = torch.zeros((sl,sl))
+
+
+        true_adj = (1-true_adj).to(torch.bool).to(device)
+
         # 20211005 tamura end
 
         emb = self.embeddings(src)

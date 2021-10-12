@@ -240,7 +240,7 @@ class Trainer(object):
                                     (normalization))
 
             self._gradient_accumulation(
-                batches, normalization, total_stats,
+                batches, train_iter.iterable.sep_id, normalization, total_stats,
                 report_stats)
 
             if self.average_decay > 0 and i % self.average_every == 0:
@@ -318,7 +318,7 @@ class Trainer(object):
 
                 with torch.cuda.amp.autocast(enabled=self.optim.amp):
                     # F-prop through the model.
-                    outputs, attns = valid_model(src, tgt, adj, src_lengths,
+                    outputs, attns = valid_model(src, tgt, adj, valid_iter.iterable.sep_id, src_lengths,
                                                  with_align=self.with_align)
 
                     # Compute loss.
@@ -338,7 +338,7 @@ class Trainer(object):
 
         return stats
 
-    def _gradient_accumulation(self, true_batches, normalization, total_stats,
+    def _gradient_accumulation(self, true_batches, sep_id, normalization, total_stats,
                                report_stats):
         if self.accum_count > 1:
             self.optim.zero_grad()
@@ -372,7 +372,7 @@ class Trainer(object):
                 with torch.cuda.amp.autocast(enabled=self.optim.amp):
                     # 20211005 tamura
                     outputs, attns = self.model(
-                        src, tgt, adj, src_lengths, bptt=bptt,
+                        src, tgt, adj, sep_id, src_lengths, bptt=bptt,
                         with_align=self.with_align)
                     # 20211005 tamura end
                     bptt = True

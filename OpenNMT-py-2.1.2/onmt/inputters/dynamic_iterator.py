@@ -106,6 +106,9 @@ class DynamicDatasetIter(object):
         self.corpora = corpora
         self.transforms = transforms
         self.fields = fields
+        # 20211010 tamura
+        self.sep_id = fields['src'].base_field.vocab.stoi['<sep>']
+        # 20211010 tamura end
         self.corpora_info = corpora_info
         self.is_train = is_train
         self.init_iterators = False

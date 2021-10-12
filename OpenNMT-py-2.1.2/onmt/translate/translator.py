@@ -333,6 +333,7 @@ class Inference(object):
     def translate(
         self,
         src,
+        adj,
         tgt=None,
         batch_size=None,
         batch_type="sents",
@@ -925,6 +926,7 @@ class GeneratorLM(Inference):
     def translate(
         self,
         src,
+        adj,
         tgt=None,
         batch_size=None,
         batch_type="sents",
@@ -945,6 +947,7 @@ class GeneratorLM(Inference):
 
         return super(GeneratorLM, self).translate(
             src,
+            adj,
             tgt,
             batch_size=1,
             batch_type=batch_type,
