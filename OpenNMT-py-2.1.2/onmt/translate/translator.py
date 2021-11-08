@@ -163,12 +163,6 @@ class Inference(object):
         self._tgt_unk_idx = self._tgt_vocab.stoi[tgt_field.unk_token]
         self._tgt_vocab_len = len(self._tgt_vocab)
 
-        # 20211013 tamura
-        src_field = dict(self.fields)["src"].base_field
-        self._src_vocab = src_field.vocab
-        self._src_sep_idx = self._src_vocab.stoi['<sep>']
-        # 20211013 tamura end
-
         self._gpu = gpu
         self._use_cuda = gpu > -1
         self._dev = (
@@ -370,34 +364,11 @@ class Inference(object):
         if self.tgt_prefix and tgt is None:
             raise ValueError("Prefix should be feed to tgt if -tgt_prefix.")
 
-        # 20211013 tamura
         src_data = {"reader": self.src_reader, "data": src}
-        adj_data = {"reader": self.src_reader, "data": adj}
         tgt_data = {"reader": self.tgt_reader, "data": tgt}
         _readers, _data = inputters.Dataset.config(
-            [("src", src_data), ("adj", adj_data), ("tgt", tgt_data)]
+            [("src", src_data), ("tgt", tgt_data)]
         )
-        # 20211013 tamura end
-
-        ### tmp
-        from onmt.utils.logging import logger
-        def parse_align_idx(align_pharaoh):
-            """
-            Parse Pharaoh alignment into [[<src>, <tgt>], ...]
-            """
-            align_list = align_pharaoh.strip().split(' ')
-            flatten_align_idx = []
-            for align in align_list:
-                try:
-                    src_idx, tgt_idx = align.split('-')
-                except ValueError:
-                    logger.warning("{} in `{}`".format(align, align_pharaoh))
-                    logger.warning("Bad alignement line exists. Please check file!")
-                    raise
-                flatten_align_idx.append([int(src_idx), int(tgt_idx)])
-            return flatten_align_idx
-
-        ### tmp end
 
         data = inputters.Dataset(
             self.fields,
@@ -796,11 +767,9 @@ class Translator(Inference):
             batch.src if isinstance(batch.src, tuple) else (batch.src, None)
         )
 
-        # 20211013 tamura
         enc_states, memory_bank, src_lengths = self.model.encoder(
-            src, batch.adj, self._src_sep_idx, src_lengths
+            src, src_lengths
         )
-        # 20211013 tamura end
         if src_lengths is None:
             assert not isinstance(
                 memory_bank, tuple
