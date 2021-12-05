@@ -152,9 +152,12 @@ class TransformerEncoder(EncoderBase):
 
         for i, sl in enumerate(c):
             true_adj[i][:sl,:sl] = torch.ones((sl,sl))
-            #true_adj[i][sl,:] = torch.ones((1,adj_size))
-            #true_adj[i][:,sl] = torch.ones(adj_size)
+            true_adj[i][sl,:] = torch.ones((1,adj_size))
+            true_adj[i][:,sl] = torch.ones(adj_size)
             #true_adj[i][sl+1:,sl+1:] = torch.ones((adj_size - sl - 1,adj_size - sl - 1))
+
+        for i in range(adj_size):
+            true_adj[i][i] = 1
 
 
 
