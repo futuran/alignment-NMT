@@ -148,7 +148,11 @@ class TransformerEncoder(EncoderBase):
         b = torch.arange(0, adj_size).repeat(1, batch_size, 1).T.to(device)
         c = torch.sum((a*b).view(-1,batch_size), dim=0)
 
-        true_adj = torch.zeros_like(true_adj).to(device)
+        #def eye_like(tensor):
+        #    return torch.eye(*tensor.size(), out=torch.empty_like(tensor))
+
+        #true_adj = torch.zeros_like(true_adj).to(device)
+        #true_adj = eye_like(true_adj).to(device)
 
         for i, sl in enumerate(c):
             true_adj[i][:sl,:sl] = torch.ones((sl,sl))
@@ -156,10 +160,8 @@ class TransformerEncoder(EncoderBase):
             true_adj[i][:,sl] = torch.ones(adj_size)
             #true_adj[i][sl+1:,sl+1:] = torch.ones((adj_size - sl - 1,adj_size - sl - 1))
 
-        for i in range(adj_size):
-            true_adj[i][i] = 1
-
-
+            for j in range(adj_size):
+                true_adj[i][j,j] = 1
 
         true_adj = (1-true_adj).to(torch.bool).to(device)
 
